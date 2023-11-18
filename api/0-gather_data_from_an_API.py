@@ -10,8 +10,7 @@ def print_employee_tasks(emp_id):
     user_url = f"{source}/users/{emp_id}"
     todo_url = f"{source}/todos"
     emp_data = requests.get(user_url).json()
-    todo_list = requests.get(source/todo_url,
-                             params={"userId": emp_id}).json()
+    todo_list = requests.get(todo_url, params={"userId": emp_id}).json()
 
     emp_name = emp_data.get("name")
     done_tasks = []
