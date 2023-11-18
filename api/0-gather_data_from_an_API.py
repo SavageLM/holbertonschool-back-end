@@ -7,8 +7,11 @@ import sys
 def print_employee_tasks(emp_id):
     """Prints a given Employee's to do list"""
     source = "https://jsonplaceholder.typicode.com/"
-    emp_data = requests.get(source/"users"/emp_id).json()
-    todo_list = requests.get(source/"todo", params={"userId": emp_id}).json()
+    user_url = f"{source}/users/{emp_id}"
+    todo_url = f"{source}/todos"
+    emp_data = requests.get(user_url).json()
+    todo_list = requests.get(source/todo_url,
+                             params={"userId": emp_id}).json()
 
     emp_name = emp_data.get("name")
     done_tasks = []
