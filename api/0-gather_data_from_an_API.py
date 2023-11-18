@@ -6,7 +6,7 @@ import sys
 
 def print_employee_tasks(emp_id):
     """Prints a given Employee's to do list"""
-    source = "https://jsonplaceholder.typicode.com/"
+    source = "https://jsonplaceholder.typicode.com"
     user_url = f"{source}/users/{emp_id}"
     todo_url = f"{source}/todos"
     emp_data = requests.get(user_url).json()
