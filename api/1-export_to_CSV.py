@@ -9,15 +9,16 @@ def exp_to_CSV():
     """Exports data to a CVS file"""
     source = 'https://jsonplaceholder.typicode.com/'
     user_id = argv[1]
-
+    # Getting User data
     user_req = requests.get(source + f'users/{user_id}')
-    user_data = user_req.jdon()
-
+    user_data = user_req.json()
+    # Getting Todo Data
     todo_req = requests.get(source + 'todos', params={'userID': user_id})
     todo_data = todo_req.json()
-
+    # Creating file to write to
     with open(f'{user_id}.csv', 'w') as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+        # Looping through todo Data to write each task
         for tasks in todo_data:
             username = user_data.get('username')
             task_status = tasks.get('completed')
