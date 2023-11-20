@@ -7,13 +7,15 @@ from sys import argv
 
 def exp_to_CSV():
     """Exports data to a CVS file"""
-    source = 'https://jsonplaceholder.typicode.com/'
     user_id = argv[1]
+    source = 'https://jsonplaceholder.typicode.com/'
+    todo_url = f"{source}users/{user_id}/todos"
+
     # Getting User data
     user_req = requests.get(source + f'users/{user_id}')
     user_data = user_req.json()
     # Getting Todo Data
-    todo_req = requests.get(source + 'todos', params={'userID': user_id})
+    todo_req = requests.get(todo_url)
     todo_data = todo_req.json()
     # Creating file to write to
     with open(f'{user_id}.csv', 'w') as file:
