@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Saves all tasks assigned to a user in JSON format"""
+"""Saves all tasks assigned to all users in JSON format"""
 import json
 import requests
 from sys import argv
@@ -7,30 +7,32 @@ from sys import argv
 API_URL = 'https://jsonplaceholder.typicode.com'
 
 
-def exp_to_JSON():
+def all_to_JSON():
     """Exports data to a JSON file"""
-    USER_ID = argv[1]
-    # Getting User data
-    user_data = requests.get(f"{API_URL}/users/{USER_ID}").json()
 
     # Getting Todo Data
-    todo_data = requests.get(f"{API_URL}/todos?userId={USER_ID}").json()
+    todo_data = requests.get(f"{API_URL}/todos").json()
 
     # Prepping Data to be saved
-    data = {
-        USER_ID: [
-            {
-                "task": task['title'],
-                "completed": task['completed'],
-                "username": user_data['username']
-            }
-            for task in todo_data
-        ]
-    }
+    data = {}
+    for task in todo_data:
+        # Getting User ID
+        user_id = task['userID']
+        # Pulling User Data
+        user_data = requests.get(f"{API_URL}/users/{user_id}").json()
+        # Checking if user is already in Data dict
+        if data[user_id] not in data:
+            data[user_id] = []
+        # Adding todo data to UserID list
+        data[user_id].append({
+            "username": user_data['username'],
+            "task": todo_data['title'],
+            "completed": todo_data['completed']
+        })
     # Creating file to write to
-    with open(f'{USER_ID}.json', 'w') as file:
+    with open("todo_all_employees.json", 'w') as file:
         json.dump(data, file)
 
 
 if __name__ == '__main__':
-    exp_to_JSON()
+    all_to_JSON()
